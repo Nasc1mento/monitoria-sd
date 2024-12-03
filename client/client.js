@@ -6,7 +6,7 @@ const socket_client = new net.Socket();
 const mqtt_client = mqtt.connect('mqtt://broker.hivemq.com');
 
 
-const socket_server_ip = "127.0.0.1"
+const socket_server_ip = "sd_server"
 const socket_server_port = 60600
 const topic = "secret"
 
