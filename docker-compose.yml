@@ -1,0 +1,26 @@
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: sd_client
+    ports:
+      - 3000:3000
+    networks:
+      - sd_network
+
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: sd_server
+    ports:
+      - "60600:60600"
+      - "1883:1883"
+    networks:
+    - sd_network
+
+networks:
+  sd_network:
+    driver: bridge

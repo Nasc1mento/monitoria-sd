@@ -3,14 +3,13 @@ import paho.mqtt.client as mqtt
 import time
 import threading
 
-ip_server = "127.0.0.1"
+ip_server = "0.0.0.0"
 port_number = 60600
 endpoint_server = (ip_server, port_number)
 buffer_size = 1024
 
 mqtt_broker = "broker.hivemq.com"  
-mqtt_port = 1883           
-mqtt_topic = ""            
+mqtt_port = 1883         
 
 def on_connect(client, userdata, flags, rc):
     print("Connected to MQTT broker with result code: " + str(rc))
