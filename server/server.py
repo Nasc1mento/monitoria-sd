@@ -8,7 +8,7 @@ port_number = 60600
 endpoint_server = (ip_server, port_number)
 buffer_size = 1024
 
-mqtt_broker = "broker.hivemq.com"  
+mqtt_broker = "sd_mosquitto"  
 mqtt_port = 1883         
 
 def on_connect(client, userdata, flags, rc):

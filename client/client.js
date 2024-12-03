@@ -2,8 +2,12 @@ import net from "net"
 import mqtt from "mqtt"
 import fs from "fs"
 
+
+const MOSQUITTO_BROKER = "mqtt://sd_mosquitto"
+const MOSQUITTO_PORT = 1883
+
 const socket_client = new net.Socket();
-const mqtt_client = mqtt.connect('mqtt://broker.hivemq.com');
+const mqtt_client = mqtt.connect(MOSQUITTO_BROKER, {port: MOSQUITTO_PORT});
 
 
 const socket_server_ip = "sd_server"
@@ -42,7 +46,7 @@ mqtt_client.on('connect', () => {
 
 mqtt_client.on('message', (topic, message) => {
     const message_as_str = message.toString();
-    
+    console.log(message_as_str);
     fs.appendFile('log.txt', `${topic}:${message_as_str}\n`, (err) => {
         if (err) {
             console.error('Error writing to log file:', err);

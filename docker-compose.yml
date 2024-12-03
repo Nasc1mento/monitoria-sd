@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: sd_client
     ports:
-      - 3000:3000
+      - "3000:3000"
     networks:
       - sd_network
 
@@ -17,6 +17,16 @@ services:
     container_name: sd_server
     ports:
       - "60600:60600"
+    networks:
+    - sd_network
+
+
+  mosquitto:
+    build:
+      context: ./mosquitto
+      dockerfile: Dockerfile
+    container_name: sd_mosquitto
+    ports:
       - "1883:1883"
     networks:
     - sd_network
