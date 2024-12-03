@@ -1,32 +1,37 @@
 import net from "net"
 import mqtt from "mqtt"
+import fs from "fs"
 
-const client = new net.Socket();
-const client_mqtt = mqtt.connect('mqtt://broker.hivemq.com');
+const socket_client = new net.Socket();
+const mqtt_client = mqtt.connect('mqtt://broker.hivemq.com');
 
-let topic = "secret"
 
-client.connect(60600, '127.0.0.1', ( )=> {
+const socket_server_ip = "127.0.0.1"
+const socket_server_port = 60600
+const topic = "secret"
+
+
+socket_client.connect(socket_server_port, socket_server_ip, ( )=> {
     console.log('Oi servidor, socket. Me inscreva nesse topico aqui por favor :)');
-    client.write(topic);
+    socket_client.write(topic);
 });
 
-client.on('data',(data) => {
+socket_client.on('data',(data) => {
     console.log('Received from server: ' + data);
 });
 
-client.on('close', () => {
+socket_client.on('close', () => {
     console.log('Connection closed');
 });
 
-client.on('error', (err) => {
+socket_client.on('error', (err) => {
     console.log('Error: ' + err.message);
 });
 
-client_mqtt.on('connect', () => {
+mqtt_client.on('connect', () => {
     console.log('Connected to MQTT broker');
     
-    client_mqtt.subscribe(topic, (err) => {
+    mqtt_client.subscribe(topic, (err) => {
         if (err) {
             console.log('Subscription failed:', err);
         } else {
@@ -35,10 +40,18 @@ client_mqtt.on('connect', () => {
     });
 });
 
-client_mqtt.on('message', (topic, message) => {
-    console.log(`Received message from topic ${topic}: ${message.toString()}`);
+mqtt_client.on('message', (topic, message) => {
+    const message_as_str = message.toString();
+    
+    fs.appendFile('log.txt', `${topic}:${message_as_str}\n`, (err) => {
+        if (err) {
+            console.error('Error writing to log file:', err);
+        } else {
+            console.log('Message logged to log.txt');
+        }
+    });
 });
 
-client_mqtt.on('error', (err) => {
+mqtt_client.on('error', (err) => {
     console.error('MQTT Error:', err);
 });
